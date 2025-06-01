@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  agenthub:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: agenthub
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./configs:/app/configs
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - PYTHONPATH=/app
+      - LOGGING__LEVEL=INFO
+    env_file:
+      - .env
+    networks:
+      - agenthub-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # 可选：添加数据库服务（如果需要PostgreSQL）
+  # postgres:
+  #   image: postgres:15
+  #   container_name: agenthub-postgres
+  #   environment:
+  #     - POSTGRES_DB=agenthub
+  #     - POSTGRES_USER=agenthub
+  #     - POSTGRES_PASSWORD=password
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - agenthub-network
+
+  # 可选：添加Redis服务（如果需要缓存）
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: agenthub-redis
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   networks:
+  #     - agenthub-network
+
+networks:
+  agenthub-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data: 

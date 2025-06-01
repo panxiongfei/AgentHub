@@ -1,0 +1,245 @@
+# AgentHub 回归测试配置
+# 定义所有测试项目和扩展规则
+
+version: "2.1.2"
+test_config:
+  # 基本配置
+  api_base_url: "http://localhost:8000"
+  frontend_url: "http://localhost:3001"
+  chrome_debug_port: 9222
+  
+  # 超时设置
+  timeouts:
+    api_request: 10
+    browser_operation: 15
+    frontend_load: 15
+    model_call: 30
+  
+  # 成功率阈值
+  thresholds:
+    excellent: 0.9   # 优秀
+    good: 0.7       # 良好
+    warning: 0.5    # 需要关注
+
+# 后台测试项目
+backend_tests:
+  # 服务基础测试
+  service_startup:
+    name: "服务启动检测"
+    description: "检查API服务是否正常运行"
+    endpoints:
+      - "/health"
+    required: true
+    category: "基础服务"
+  
+  # 大模型测试
+  model_integration:
+    name: "大模型调用测试"
+    description: "验证AI模型集成是否正常"
+    test_prompt: "请简单回答：AgentHub系统测试"
+    max_tokens: 50
+    required: true
+    category: "AI功能"
+  
+  # API端点测试
+  api_endpoints:
+    name: "API端点测试"
+    description: "检查核心API端点响应"
+    endpoints:
+      - path: "/api/v1/system/info"
+        description: "系统信息"
+        required_keys: ["version", "status"]
+      - path: "/api/v1/platforms"
+        description: "平台列表"
+        required_keys: []
+      - path: "/health"
+        description: "健康检查"
+        required_keys: ["status"]
+    required: true
+    category: "API服务"
+  
+  # 浏览器引擎测试
+  browser_engine:
+    name: "浏览器引擎测试"
+    description: "验证浏览器自动化功能"
+    test_url: "https://www.baidu.com"
+    test_selector: "#kw"
+    required: true
+    category: "浏览器自动化"
+  
+  # 历史数据测试
+  history_access:
+    name: "历史任务访问测试"
+    description: "检查历史任务和文件访问"
+    data_dirs:
+      - "data/history_downloads"
+      - "data/multi_platform_downloads"
+    required: false
+    category: "数据管理"
+
+# 前台测试项目
+frontend_tests:
+  # 前端应用访问
+  app_access:
+    name: "前端应用访问测试"
+    description: "检查前端应用是否可访问"
+    check_keywords: ["vue", "app", "agenthub", "代理"]
+    required: true
+    category: "前端基础"
+  
+  # 历史显示测试
+  history_display:
+    name: "历史任务显示测试"
+    description: "验证历史任务显示功能"
+    api_endpoint: "/api/v1/history"
+    allow_404: true  # API可能还未实现
+    required: false
+    category: "前端功能"
+  
+  # 系统状态显示
+  system_status:
+    name: "系统状态显示测试"
+    description: "检查系统状态信息显示"
+    api_endpoint: "/api/v1/system/info"
+    required_keys: ["version", "status"]
+    required: true
+    category: "前端功能"
+  
+  # 页面导航测试
+  page_navigation:
+    name: "页面导航测试"
+    description: "验证基本页面导航功能"
+    test_paths:
+      - "/"
+      - "/#/dashboard"
+      - "/#/history"
+      - "/#/platforms"
+    min_successful: 1  # 至少一个路径可访问
+    required: true
+    category: "前端导航"
+
+# 平台特定测试
+platform_tests:
+  # Manus平台测试
+  manus:
+    name: "Manus平台连接测试"
+    description: "验证Manus平台浏览器任务发起"
+    url: "https://manus.chat"
+    selectors:
+      - 'input[type="text"]'
+      - 'textarea'
+      - 'button'
+    enabled: false  # 默认禁用，需要手动启用
+    category: "平台集成"
+  
+  # Skywork平台测试
+  skywork:
+    name: "Skywork平台连接测试"
+    description: "验证Skywork平台浏览器任务发起"
+    url: "https://skywork.metaso.cn"
+    selectors:
+      - 'input[type="text"]'
+      - 'textarea'
+    enabled: false
+    category: "平台集成"
+
+# 自动扩展规则
+auto_extension_rules:
+  # 新增API端点时自动添加测试
+  api_endpoint_detection:
+    enabled: true
+    scan_paths:
+      - "app/api"
+    pattern: "@router\\.(get|post|put|delete)\\(['\"]([^'\"]+)['\"]"
+    auto_add_basic_test: true
+  
+  # 新增模型功能时自动添加测试
+  model_feature_detection:
+    enabled: true
+    scan_paths:
+      - "app/core/model_client.py"
+      - "app/core/ai_*.py"
+    patterns:
+      - "async def ([a-zA-Z_]+).*ModelResponse"
+      - "class ([A-Z][a-zA-Z]+Client)"
+    auto_add_test: true
+  
+  # 新增浏览器功能时自动添加测试
+  browser_feature_detection:
+    enabled: true
+    scan_paths:
+      - "app/core/browser_engine.py"
+      - "app/platforms"
+    patterns:
+      - "async def (smart_[a-zA-Z_]+)"
+      - "async def (ai_[a-zA-Z_]+)"
+    auto_add_test: true
+  
+  # 新增平台时自动添加测试
+  platform_detection:
+    enabled: true
+    scan_paths:
+      - "app/platforms"
+    pattern: "class ([A-Z][a-zA-Z]+Platform)"
+    auto_add_platform_test: true
+
+# 测试报告配置
+reporting:
+  # 保存设置
+  save_detailed_reports: true
+  save_latest_result: true
+  retention_days: 30
+  
+  # 输出格式
+  output_formats:
+    - "json"
+    - "console"
+  
+  # 通知设置
+  notifications:
+    on_failure: true
+    on_success: false
+    on_degradation: true  # 成功率下降时通知
+    
+  # 外部集成
+  external_integrations:
+    webhook_url: null
+    slack_webhook: null
+    email_alerts: false
+
+# 调度配置
+scheduling:
+  # 自动运行设置
+  auto_run: false
+  cron_expression: "0 8,20 * * *"  # 每天8点和20点运行
+  
+  # 触发条件
+  triggers:
+    - "git_push"      # Git推送时
+    - "deployment"    # 部署时
+    - "manual"        # 手动触发
+  
+  # 并发控制
+  max_concurrent_tests: 5
+  test_isolation: true
+
+# 环境配置
+environments:
+  development:
+    api_base_url: "http://localhost:8000"
+    frontend_url: "http://localhost:3001"
+    chrome_debug_port: 9222
+    strict_mode: false
+  
+  staging:
+    api_base_url: "http://staging.agenthub.com"
+    frontend_url: "http://staging-frontend.agenthub.com"
+    chrome_debug_port: 9222
+    strict_mode: true
+  
+  production:
+    api_base_url: "http://api.agenthub.com"
+    frontend_url: "http://app.agenthub.com"
+    chrome_debug_port: 9222
+    strict_mode: true
+    read_only_tests: true  # 生产环境只读测试 

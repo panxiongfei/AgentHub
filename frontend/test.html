@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentHub 测试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f5f7fa;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success { background: #f0f9ff; border: 1px solid #67c23a; color: #67c23a; }
+        .error { background: #fef0f0; border: 1px solid #f56c6c; color: #f56c6c; }
+        .info { background: #f4f4f5; border: 1px solid #909399; color: #606266; }
+        button {
+            background: #409eff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #337ecc; }
+        #results { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 AgentHub 系统测试</h1>
+        
+        <div class="status info">
+            <strong>测试状态:</strong> <span id="testStatus">准备就绪</span>
+        </div>
+
+        <h3>API 连接测试</h3>
+        <button onclick="testAPI()">测试后端API连接</button>
+        <button onclick="testHealth()">测试健康检查</button>
+        <button onclick="testPlatforms()">测试平台列表</button>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        
+        function updateStatus(message, type = 'info') {
+            document.getElementById('testStatus').textContent = message;
+        }
+        
+        function addResult(title, content, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.innerHTML = `<strong>${title}:</strong> ${content}`;
+            results.appendChild(div);
+        }
+        
+        async function testAPI() {
+            updateStatus('测试API连接中...');
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                addResult('API连接测试', `成功 - 状态: ${data.status}`, 'success');
+                updateStatus('API连接正常');
+            } catch (error) {
+                addResult('API连接测试', `失败 - ${error.message}`, 'error');
+                updateStatus('API连接失败');
+            }
+        }
+        
+        async function testHealth() {
+            updateStatus('测试健康检查中...');
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                addResult('健康检查', JSON.stringify(data, null, 2), 'success');
+                updateStatus('健康检查完成');
+            } catch (error) {
+                addResult('健康检查', `失败 - ${error.message}`, 'error');
+                updateStatus('健康检查失败');
+            }
+        }
+        
+        async function testPlatforms() {
+            updateStatus('测试平台列表中...');
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/platforms`);
+                const data = await response.json();
+                addResult('平台列表', `找到 ${data.platforms.length} 个平台: ${data.platforms.map(p => p.display_name).join(', ')}`, 'success');
+                updateStatus('平台列表获取成功');
+            } catch (error) {
+                addResult('平台列表', `失败 - ${error.message}`, 'error');
+                updateStatus('平台列表获取失败');
+            }
+        }
+        
+        // 页面加载时自动测试
+        window.onload = function() {
+            updateStatus('页面加载完成，可以开始测试');
+            console.log('🎉 测试页面加载成功');
+        };
+    </script>
+</body>
+</html> 

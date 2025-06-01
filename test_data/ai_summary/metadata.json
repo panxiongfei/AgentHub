@@ -1,0 +1,12 @@
+{
+  "task": {
+    "id": "test_ai_summary_001",
+    "title": "人工智能在医疗健康领域的应用与前景",
+    "date": "2025-06-01"
+  },
+  "download": {
+    "timestamp": "2025-06-01T19:46:00",
+    "page_url": "https://example.com/ai-medical",
+    "content_length": 340
+  }
+}

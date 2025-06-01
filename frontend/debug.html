@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentHub - 调试测试页面</title>
+    <!-- 引入 Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- 引入 Element Plus CSS 和 JS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        .log-container {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .log-entry { margin-bottom: 5px; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <div id="app" class="container">
+        <h1>{{ pageTitle }}</h1>
+        <el-alert v-if="vueMessage" :title="vueMessage" type="success" show-icon :closable="false"></el-alert>
+
+        <el-card style="margin-top: 20px;">
+            <template #header>
+              <div>Vue 组件测试</div>
+            </template>
+            <p>计数器: {{ counter }}</p>
+            <el-button type="primary" @click="incrementCounter">增加计数</el-button>
+            <el-button type="info" @click="testBackendCall">测试后端调用 (模拟)</el-button>
+        </el-card>
+
+        <h2>调用日志:</h2>
+        <div class="log-container" ref="logContainer">
+            <div v-for="(log, index) in logs" :key="index" :class="['log-entry', log.type]">
+                [{{ log.timestamp }}] {{ log.message }}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, nextTick } = Vue;
+        const App = {
+            data() {
+                return {
+                    pageTitle: 'AgentHub - HTML + JS 调试模式',
+                    vueMessage: 'Vue 应用已加载，Element Plus 也已集成!',
+                    counter: 0,
+                    logs: []
+                }
+            },
+            methods: {
+                logMessage(message, type = 'info') {
+                    const timestamp = new Date().toLocaleTimeString();
+                    this.logs.push({ timestamp, message, type });
+                    // 自动滚动到底部
+                    this.$nextTick(() => {
+                        const container = this.$refs.logContainer;
+                        if (container) {
+                            container.scrollTop = container.scrollHeight;
+                        }
+                    });
+                },
+                incrementCounter() {
+                    this.counter++;
+                    this.logMessage(`计数器增加到: ${this.counter}`);
+                },
+                async testBackendCall() {
+                    this.logMessage('尝试调用后端API: /api/v1/health (模拟)');
+                    try {
+                        // 在实际场景中，您会替换为真实的 fetch 调用
+                        // const response = await fetch('/api/v1/health');
+                        // if (!response.ok) {
+                        //   throw new Error(`HTTP error! status: ${response.status}`);
+                        // }
+                        // const data = await response.json();
+                        // this.logMessage(`后端API调用成功: ${JSON.stringify(data)}`, 'success');
+                        
+                        // 模拟一个成功的API调用
+                        await new Promise(resolve => setTimeout(resolve, 500)); // 模拟网络延迟
+                        const mockData = { status: 'healthy', timestamp: new Date().toISOString() };
+                        this.logMessage(`模拟后端API调用成功: ${JSON.stringify(mockData)}`, 'success');
+
+                    } catch (error) {
+                        this.logMessage(`后端API调用失败: ${error.message}`, 'error');
+                    }
+                }
+            },
+            mounted() {
+                this.logMessage('调试Vue应用已挂载!');
+            }
+        };
+
+        const app = createApp(App);
+        app.use(ElementPlus);
+        app.mount('#app');
+    </script>
+</body>
+</html> 

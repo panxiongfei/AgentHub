@@ -1,0 +1,332 @@
+platforms:
+  # Manus 平台配置
+  manus:
+    base_url: "https://manus.ai"
+    debug_port: 9222
+    timeout: 30000
+    enabled: true
+    
+    # 平台能力声明
+    capabilities:
+      task_submission: true
+      history_download: true
+      file_management: true
+      ai_analysis: true
+      multi_modal: true
+      real_time_processing: true
+      
+    # 平台域名识别
+    domains:
+      - "manus.ai"
+      - "manus.im"
+      
+    # 平台关键词
+    keywords:
+      title: ["manus", "research", "ai"]
+      content: ["research", "analysis", "report"]
+      
+    # 选择器配置
+    selectors:
+      # 导航相关
+      navigation:
+        sidebar: 
+          - "div[style*='width']"
+          - ".sidebar"
+          - ".left-panel"
+          - "nav"
+          - ".history-panel"
+        main_content:
+          - ".main"
+          - ".content"
+          - ".chat-area"
+          
+      # 任务操作相关  
+      task_operations:
+        input_field:
+          - "textarea"
+          - "input[type='text']"
+          - ".input-area"
+          - "[contenteditable='true']"
+        submit_button:
+          - "button[type='submit']"
+          - ".submit-btn"
+          - "button:has-text('发送')"
+          - "button:has-text('提交')"
+          
+      # 历史任务相关
+      history_elements:
+        task_items:
+          - "span.truncate.text-sm.font-medium"
+          - "div:has(span.truncate.text-sm.font-medium)"
+          - "div.flex.items-center.gap-2"
+          - "li"
+          - "div[role='button']"
+          - ".conversation-item"
+        task_title:
+          - "span.truncate.text-sm.font-medium"
+          - ".truncate"
+          - "h3"
+          - "div:first-child"
+        task_date:
+          - ".date"
+          - ".timestamp"
+          - "time"
+          - ".meta"
+
+  # Skywork 平台配置
+  skywork:
+    base_url: "https://skywork.ai"
+    debug_port: 9222
+    timeout: 30000
+    enabled: true
+    
+    # 平台能力声明
+    capabilities:
+      task_submission: true
+      history_download: true
+      file_management: true
+      ai_analysis: true
+      multi_modal: false
+      real_time_processing: true
+      
+    # 平台域名识别
+    domains:
+      - "skywork.ai"
+      - "sky-work.com"
+      
+    # 平台关键词
+    keywords:
+      title: ["skywork", "chat", "ai"]
+      content: ["conversation", "chat", "dialogue"]
+      
+    # 选择器配置
+    selectors:
+      # 导航相关
+      navigation:
+        sidebar:
+          - ".sidebar"
+          - ".history-panel"
+          - ".left-panel"
+          - ".conversation-list"
+          - ".nav-left"
+        main_content:
+          - ".main"
+          - ".chat-main"
+          - ".conversation-area"
+          
+      # 任务操作相关
+      task_operations:
+        input_field:
+          - "textarea"
+          - "input[type='text']"
+          - ".chat-input"
+          - "[contenteditable='true']"
+        submit_button:
+          - "button[type='submit']"
+          - ".send-btn"
+          - "button:has-text('发送')"
+          - "button:has-text('Send')"
+          
+      # 历史任务相关
+      history_elements:
+        task_items:
+          - ".sidebar li"
+          - "li"
+          - ".conversation-item"
+          - ".chat-item"
+          - ".history-item"
+        task_title:
+          - ".conversation-title"
+          - ".chat-title"
+          - "h3"
+          - "h4"
+          - ".title"
+        task_date:
+          - ".date"
+          - ".time"
+          - ".timestamp"
+          - "time"
+
+  # ChatGPT DeepSearch 平台配置（第三平台模板）
+  chatgpt_deepsearch:
+    base_url: "https://chatgpt.com"
+    debug_port: 9222
+    timeout: 30000
+    enabled: false  # 待实现
+    
+    # 平台能力声明
+    capabilities:
+      task_submission: true
+      history_download: true
+      file_management: true
+      ai_analysis: true
+      multi_modal: true
+      real_time_processing: true
+      web_search: true  # 特有能力
+      
+    # 平台域名识别
+    domains:
+      - "chatgpt.com"
+      - "openai.com"
+      - "chat.openai.com"
+      
+    # 平台关键词
+    keywords:
+      title: ["chatgpt", "openai", "gpt"]
+      content: ["conversation", "chat", "search"]
+      
+    # 选择器配置
+    selectors:
+      # 导航相关
+      navigation:
+        sidebar:
+          - "nav"
+          - ".sidebar"
+          - ".conversation-list"
+          - "[data-testid='navigation']"
+        main_content:
+          - "main"
+          - ".conversation"
+          - ".chat-container"
+          
+      # 任务操作相关
+      task_operations:
+        input_field:
+          - "textarea[data-id]"
+          - "#prompt-textarea"
+          - "textarea"
+          - "[contenteditable='true']"
+        submit_button:
+          - "button[data-testid='send-button']"
+          - ".send-button"
+          - "button:has-text('Send')"
+          
+      # 历史任务相关
+      history_elements:
+        task_items:
+          - ".conversation-item"
+          - "li[data-testid]"
+          - ".chat-history-item"
+        task_title:
+          - ".conversation-title"
+          - "h3"
+          - ".title"
+        task_date:
+          - ".timestamp"
+          - ".date"
+          - "time"
+
+  # 扣子空间平台配置
+  coze_space:
+    base_url: "https://space.coze.cn"
+    debug_port: 9222
+    timeout: 30000
+    enabled: true
+    
+    # 平台能力声明
+    capabilities:
+      task_submission: true
+      history_download: true
+      file_management: true
+      ai_analysis: true
+      multi_modal: true
+      real_time_processing: true
+      collaborative_editing: true
+      
+    # 平台域名识别
+    domains:
+      - "space.coze.cn"
+      - "coze.cn"
+      - "coze.com"
+      
+    # 平台关键词
+    keywords:
+      title: ["coze", "扣子", "space", "ai"]
+      content: ["conversation", "chat", "dialogue", "workflow"]
+      
+    # 选择器配置
+    selectors:
+      # 导航相关
+      navigation:
+        sidebar:
+          - ".sidebar"
+          - ".left-sidebar"
+          - ".conversation-list"
+          - "[class*='sidebar']"
+          - ".chat-history"
+          - "nav"
+        main_content:
+          - ".main"
+          - ".chat-main"
+          - ".conversation-area"
+          - "[class*='main']"
+          - ".workspace"
+          
+      # 任务操作相关
+      task_operations:
+        input_field:
+          - "textarea"
+          - "input[type='text']"
+          - ".chat-input"
+          - "[contenteditable='true']"
+          - ".text-editor"
+          - "[placeholder*='输入']"
+        submit_button:
+          - "button[type='submit']"
+          - ".send-btn"
+          - ".submit-button"
+          - "button:has-text('发送')"
+          - "button:has-text('提交')"
+          - "button:has-text('Send')"
+          - "[class*='send']"
+          
+      # 历史任务相关
+      history_elements:
+        task_items:
+          - ".conversation-item"
+          - ".chat-item"
+          - ".history-item"
+          - "li[data-conversation]"
+          - "[class*='conversation']"
+          - ".task-card"
+        task_title:
+          - ".conversation-title"
+          - ".chat-title"
+          - ".task-title"
+          - "h3"
+          - "h4"
+          - ".title"
+          - "[class*='title']"
+        task_date:
+          - ".date"
+          - ".time"
+          - ".timestamp"
+          - "time"
+          - "[class*='time']"
+          - ".meta-info"
+
+# 全局配置
+global:
+  # 默认超时配置
+  timeouts:
+    page_load: 30000
+    element_wait: 10000
+    action_timeout: 5000
+    
+  # 重试配置
+  retry:
+    max_attempts: 3
+    delay_seconds: 2
+    backoff_multiplier: 1.5
+    
+  # AI总结配置
+  ai_summary:
+    enabled: true
+    auto_generate: true
+    force_regenerate: false
+    
+  # 质量控制
+  quality:
+    min_success_rate: 0.8
+    max_error_rate: 0.2
+    performance_threshold_ms: 5000
