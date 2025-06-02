@@ -140,7 +140,9 @@ tmp/
 *.tmp
 
 # Browser automation
-screenshots/
+screenshots/*.png
+screenshots/*.jpg
+!screenshots/
 downloads/
 
 # Configuration files with secrets
