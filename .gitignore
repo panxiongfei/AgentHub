@@ -1,12 +1,13 @@
-# Byte-compiled / optimized / DLL files
+# =============================================================================
+# AgentHub 项目 - 开发环境与发布隔离配置
+# =============================================================================
+
+# 1. 核心Python文件
+# -----------------------------------------------------------------------------
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
-
-# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -25,101 +26,153 @@ wheels/
 *.egg
 MANIFEST
 
-# PyInstaller
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
+# 2. 开发工具和测试
+# -----------------------------------------------------------------------------
+.pytest_cache/
+.coverage
+.coverage.*
 htmlcov/
 .tox/
 .nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
+.hypothesis/
 coverage.xml
 *.cover
-.hypothesis/
-.pytest_cache/
-
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-.python-version
-
-# celery beat schedule file
-celerybeat-schedule
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
 .mypy_cache/
 .dmypy.json
 dmypy.json
-
-# Pyre type checker
 .pyre/
 
-# IDEs
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# 3. 开发环境隔离 (本地开发专用)
+# -----------------------------------------------------------------------------
+# 开发脚本和临时工具
+dev_scripts/
+local_scripts/
+experiments/
+sandbox/
+temp_*
+debug_*
+test_*
+demo_*
 
-# OS
+# 开发时的临时文件
+*.tmp
+*.temp
+*.local
+*.dev
+*_local.*
+*_temp.*
+*_debug.*
+*_test.*
+
+# 本地开发配置
+configs/settings.local.yaml
+configs/settings.dev.yaml
+configs/*.local.*
+configs/*.dev.*
+configs/*.temp.*
+
+# 开发数据和缓存
+data/dev/
+data/local/
+data/temp/
+data/cache/
+data/experiments/
+.dev_cache/
+.local_cache/
+
+# 4. 敏感信息和配置 (绝对不提交)
+# -----------------------------------------------------------------------------
+# 配置文件中的敏感信息
+configs/settings.yaml
+configs/settings.production.yaml
+configs/*.secret.*
+configs/*.private.*
+
+# 环境变量文件
+.env
+.env.*
+!.env.sample
+!.env.example
+
+# API密钥和认证
+*.key
+*.pem
+*.crt
+auth_*.json
+credentials_*
+secrets_*
+
+# 5. 运行时数据 (本地运行产生)
+# -----------------------------------------------------------------------------
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+data/autocall.db*
+
+# 日志文件
+logs/
+*.log
+*.log.*
+
+# 运行时缓存
+cache/
+.cache/
+runtime_cache/
+
+# 用户数据和历史
+data/history_downloads/
+data/multi_platform_downloads/
+data/user_data/
+data/task_results/
+
+# 测试和回归数据
+data/regression_tests/
+data/integration_tests/
+data/platform_tests/
+data/frontend_integration_tests/
+
+# 平台历史数据
+data/skywork_history/
+data/manus_history/
+data/coze_space_history_downloads/
+data/*/  # 所有数据子目录
+!data/.gitkeep
+
+# 6. 浏览器自动化相关 (本地测试产生)
+# -----------------------------------------------------------------------------
+# 截图和测试结果
+screenshots/*.png
+screenshots/*.jpg
+screenshots/*.gif
+!screenshots/README.md
+!screenshots/.gitkeep
+
+# 浏览器数据
+chrome_*_data/
+browser_profiles/
+downloads/
+
+# 页面快照
+*.html.snapshot
+page_dumps/
+
+# 7. 前端开发文件
+# -----------------------------------------------------------------------------
+# Node.js
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/coverage/
+frontend/.nyc_output/
+
+# 前端构建产物
+frontend/build/
+static/build/
+
+# 8. 系统和IDE文件
+# -----------------------------------------------------------------------------
+# 操作系统
 .DS_Store
 .DS_Store?
 ._*
@@ -128,73 +181,81 @@ dmypy.json
 ehthumbs.db
 Thumbs.db
 
-# Project specific
-data/
-logs/
-*.sqlite
-*.db
+# IDE和编辑器
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*~
+.vim/
 
-# Temporary files
-temp/
-tmp/
-*.tmp
-
-# Browser automation
-screenshots/*.png
-screenshots/*.jpg
-!screenshots/
-downloads/
-
-# Configuration files with secrets
-.env
-.env.local
-.env.production
-configs/*.secret.yaml
-configs/settings.yaml
-
-# Results and exports
-results/
-exports/
-*.xlsx
-*.csv
-*.json.bak
-
-# Docker
-.dockerignore
-
-# Development and testing
-dev_scripts/
-test_output/
-*.test.log
-
-# Backup files
-*.bak
-*.backup
-
-# Lock files
-poetry.lock
-Pipfile.lock
-
-# Virtual environment
+# 虚拟环境
 .venv/
 venv/
+env/
+ENV/
+env.bak/
+venv.bak/
 
-# Node modules (frontend)
-frontend/node_modules/
-frontend/dist/
-frontend/.vite/
+# 9. 构建和部署相关
+# -----------------------------------------------------------------------------
+# Docker本地构建
+.dockerignore.local
+docker-compose.override.yml
+docker-compose.local.yml
 
-# Frontend build artifacts
-frontend/.DS_Store
-frontend/coverage/
+# 部署脚本
+deploy_*
+deployment/local/
+deployment/temp/
 
-# Debug files
-*.html.debug
-*.png.debug
+# 10. 导出和备份文件 (临时产生)
+# -----------------------------------------------------------------------------
+# 导出的数据文件
+exports/
+results/
+reports/
+backups/
 
-# AI model cache
+# 各种格式的导出文件
+*.xlsx
+*.csv
+*.json.export
+*.xml.export
+
+# 备份文件
+*.bak
+*.backup
+*.old
+
+# 11. AI和模型相关 (缓存和临时)
+# -----------------------------------------------------------------------------
+# AI模型缓存
 .ai_cache/
 model_cache/
+ai_models/
+.model_downloads/
 
-# Chrome user data
-chrome_*_data/ 
+# AI生成的临时文件
+ai_generated/
+temp_ai_*
+
+# 12. 性能和监控数据 (运行时产生)
+# -----------------------------------------------------------------------------
+# 性能分析
+*.prof
+profiling/
+benchmarks/results/
+
+# 监控数据
+monitoring/data/
+metrics/
+stats/
+
+# =============================================================================
+# 重要提醒: 
+# - 所有带 .sample 或 .example 后缀的文件会被提交，作为配置模板
+# - 所有带 .local, .dev, .temp 后缀的文件会被忽略，用于本地开发
+# - 核心代码和文档会正常提交到GitHub
+# ============================================================================= 
