@@ -150,6 +150,7 @@ downloads/
 .env.local
 .env.production
 configs/*.secret.yaml
+configs/settings.yaml
 
 # Results and exports
 results/

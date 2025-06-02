@@ -1,0 +1,63 @@
+app:
+  api_prefix: /api/v1
+  cors_allow_credentials: true
+  cors_allow_headers:
+  - '*'
+  cors_allow_methods:
+  - '*'
+  cors_origins:
+  - '*'
+  debug: false
+  name: AgentHub
+  version: 1.0.0
+
+database:
+  echo: false
+  max_overflow: 10
+  pool_size: 5
+  url: sqlite:///data/autocall.db
+
+logging:
+  backup_count: 5
+  file: logs/app.log
+  format: json
+  level: INFO
+  max_bytes: 10485760
+
+notification:
+  default_recipients: []
+  smtp_password: null
+  smtp_port: 587
+  smtp_server: null
+  smtp_use_tls: true
+  smtp_username: null
+
+platform:
+  config_file: configs/platforms.yaml
+  default_timeout: 60
+  enabled_platforms: []
+  max_retries: 3
+  retry_delay: 5
+
+scheduler:
+  default_schedule: 0 9 * * *
+  job_defaults:
+    coalesce: false
+    max_instances: 3
+    misfire_grace_time: 30
+  max_workers: 5
+  timezone: Asia/Shanghai
+
+model:
+  default_provider: DeepSeek
+  deepseek_api_key: "sk-your-deepseek-api-key-here"
+  default_model: deepseek-chat
+  deepseek_base_url: https://api.deepseek.com
+  max_tokens: 4096
+  temperature: 0.7
+  timeout: 30
+
+security:
+  access_token_expire_minutes: 30
+  encryption_key: null
+  secret_key: "your-secret-key-here" 
